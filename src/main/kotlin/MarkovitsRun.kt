@@ -60,14 +60,14 @@ fun main(args: Array<String>) {
             }.toDoubleArray()
         }.toTypedArray()
 
-        fun optimizeForRisk(risk: Double) {
+        fun optimizeForRisk(risk: Double, shorts: Boolean) {
             val markovits = Markovits()
-            markovits.optimize(risk, cv, devs, false)
+            markovits.optimize(risk, cv, devs, shorts)
 
             val optimalReturn = means.zip(markovits.optimalWeights!!).map { (x, y) -> x * y }.sum()
             val optimalRisk = devs.zip(markovits.optimalWeights!!).map { (x, y) -> x * y }.sum()
-            println(String.format("### Risk aversion factor=%.2f%% Risk=%.2f%% Return=%.2f%%",
-                    risk * 100,
+            println(String.format("### Risk aversion factor=%.2f Risk=%.2f%% Return=%.2f%%${if(shorts) " Shorts allowed" else ""}",
+                    risk,
                     optimalRisk * 100,
                     optimalReturn * 100))
 
@@ -83,8 +83,20 @@ fun main(args: Array<String>) {
             println()
         }
 
+        for (riskAversion in (1000 downTo 101).step(100)) {
+            optimizeForRisk(riskAversion / 100.0, false)
+        }
+
         for (riskAversion in (100 downTo 1).step(1)) {
-            optimizeForRisk(riskAversion / 100.0)
+            optimizeForRisk(riskAversion / 100.0, false)
+        }
+
+        for (riskAversion in (1000 downTo 101).step(100)) {
+            optimizeForRisk(riskAversion / 100.0, true)
+        }
+
+        for (riskAversion in (100 downTo 1).step(1)) {
+            optimizeForRisk(riskAversion / 100.0, true)
         }
     }
 }
