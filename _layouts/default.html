@@ -12,11 +12,9 @@
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
   </head>
   <body>
-    <section class="page-header">
-      <h2 class="project-tagline">{{ site.tag_line | site.description | default: site.github.project_tagline }}</h2>
-    </section>
-
     <section class="main-content">
+      <h2 class="project-tagline">{{ site.tag_line | site.description | default: site.github.project_tagline }}</h2>
+
       {{ content }}
 
       <footer class="site-footer">
