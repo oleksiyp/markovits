@@ -1,5 +1,3 @@
-```
-```
 ### Risk aversion factor=100.00% Risk=10.87% Return=1.70%
 ```
   Bitcoin Cash / BCC W=  24.35% Avg=   1.85% StdDev=  12.97%
