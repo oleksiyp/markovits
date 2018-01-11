@@ -62,7 +62,7 @@ fun main(args: Array<String>) {
 
         fun optimizeForRisk(risk: Double) {
             val markovits = Markovits()
-            markovits.optimize(risk, cv, devs, true)
+            markovits.optimize(risk, cv, devs, false)
 
             val optimalReturn = means.zip(markovits.optimalWeights!!).map { (x, y) -> x * y }.sum()
             val optimalRisk = devs.zip(markovits.optimalWeights!!).map { (x, y) -> x * y }.sum()
