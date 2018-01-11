@@ -66,11 +66,12 @@ fun main(args: Array<String>) {
 
             val optimalReturn = means.zip(markovits.optimalWeights!!).map { (x, y) -> x * y }.sum()
             val optimalRisk = devs.zip(markovits.optimalWeights!!).map { (x, y) -> x * y }.sum()
-            println(String.format("Risk aversion factor=%.2f%% Risk=%.2f%% Return=%.2f%%",
+            println(String.format("### Risk aversion factor=%.2f%% Risk=%.2f%% Return=%.2f%%",
                     risk * 100,
                     optimalRisk * 100,
                     optimalReturn * 100))
 
+            println("```")
             repeat(n) {
                 println(String.format("%20s W=%7.2f%% Avg=%7.2f%% StdDev=%7.2f%%",
                         timeseries[it].name,
@@ -78,6 +79,7 @@ fun main(args: Array<String>) {
                         timeseries[it].average * 100,
                         timeseries[it].stdDev * 100))
             }
+            println("```")
             println()
         }
 
