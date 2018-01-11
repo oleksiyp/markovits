@@ -1,4 +1,4 @@
-!(Dodge)[http://dogecoin.com/imgs/dogecoin-300.png]
+![Dodge](http://dogecoin.com/imgs/dogecoin-300.png)
 
 ```
 Risk aversion factor=100.00% Risk=10.87% Return=1.70%
