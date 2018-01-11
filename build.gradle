@@ -25,7 +25,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
 
-    compile group: 'com.joptimizer', name: 'joptimizer', version: '4.0.0'
+    compile 'org.ojalgo:ojalgo-finance:1.0.0'
 }
 
 compileKotlin {

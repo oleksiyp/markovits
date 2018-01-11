@@ -11,7 +11,7 @@ data class TimeSeriesDate(val date: Date) {
     override fun toString() = dateFormatter.format(date.toInstant().atZone(ZoneOffset.UTC))
 }
 
-class DailyTimeSeries(val name: String, val data: Map<TimeSeriesDate, Double>) {
+class DailyTimeSeries(val name: String, data: Map<TimeSeriesDate, Double>) {
     val average = data.values.sum().div(data.size)
     val centeredData = data.map { (k, v) -> Pair(k, v - average) }.toMap()
     val stdDev = sqrt(centeredData.values.map { it * it }.sum().div(data.size - 1))
@@ -22,6 +22,7 @@ class DailyTimeSeries(val name: String, val data: Map<TimeSeriesDate, Double>) {
         val sum = keys.map { key ->
             centeredData.getValue(key) * ts.centeredData.getValue(key)
         }.sum()
+
         return sum.div(keys.size - 1)
                 .div(stdDev * ts.stdDev)
     }
