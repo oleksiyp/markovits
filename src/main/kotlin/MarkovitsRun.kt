@@ -48,7 +48,7 @@ fun main(args: Array<String>) {
                 val priceClose = CryptoCompare.priceClose(coin.symbol, "USD")
                         .filterValues { it -> it > 1e-6 }
                 val assetReturns = priceClose.returns()
-                if (assetReturns.size == 30) {
+                if (assetReturns.size == 15) {
                     val ts = DailyTimeSeries(coin.coinName, assetReturns.mapKeys { TimeSeriesDate(it.key) })
                     if (abs(ts.stdDev) > 1e-6) {
                         timeseries.add(ts)

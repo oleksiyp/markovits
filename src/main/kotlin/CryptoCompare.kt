@@ -87,7 +87,7 @@ object CryptoCompare {
                     .newBuilder()
                     .addQueryParameter("fsym", from)
                     .addQueryParameter("tsym", to)
-                    .addQueryParameter("limit", "30")
+                    .addQueryParameter("limit", "15")
                     .addQueryParameter("aggregate", "1")
                     .addQueryParameter("e", "CCCAGG")
                     .build())
