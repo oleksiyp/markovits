@@ -1330,3 +1330,4 @@
                Waves W=   0.00% Avg=   1.11% StdDev=   8.05%
               Monero W=   0.00% Avg=   1.24% StdDev=   7.91%
               Ripple W=  57.44% Avg=   2.32% StdDev=  14.75%
+```
