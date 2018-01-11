@@ -44,10 +44,20 @@ fun main(args: Array<String>) {
         val timeseries = mutableListOf<DailyTimeSeries>()
 
         coins.forEach { coin ->
-            val priceClose = CryptoCompare.priceClose(coin.symbol, "USD")
-                    .filterValues { it -> it > 1e-6 }
-            val assetReturns = priceClose.returns()
-            timeseries.add(DailyTimeSeries(coin.coinName, assetReturns.mapKeys { TimeSeriesDate(it.key) }))
+            try {
+                val priceClose = CryptoCompare.priceClose(coin.symbol, "USD")
+                        .filterValues { it -> it > 1e-6 }
+                val assetReturns = priceClose.returns()
+                if (assetReturns.size == 30) {
+                    val ts = DailyTimeSeries(coin.coinName, assetReturns.mapKeys { TimeSeriesDate(it.key) })
+                    if (abs(ts.stdDev) > 1e-6) {
+                        timeseries.add(ts)
+                        println("DATA ${coin.coinName} ${assetReturns.size}")
+                    }
+                }
+            } catch(ex: Throwable) {
+                // skip
+            }
         }
 
         val n = timeseries.size
@@ -55,9 +65,11 @@ fun main(args: Array<String>) {
         val means = timeseries.map { it.average }.toDoubleArray()
         val devs = timeseries.map { it.stdDev }.toDoubleArray()
         val cv = (1..n).map { i ->
-            (1..n).map { j ->
+            val row = (1..n).map { j ->
                 timeseries[i - 1].cov(timeseries[j - 1])
             }.toDoubleArray()
+            println("CV ${timeseries[i - 1].name} ${Arrays.toString(row)}")
+            row
         }.toTypedArray()
 
         fun optimizeForRisk(risk: Double, shorts: Boolean) {
@@ -73,6 +85,10 @@ fun main(args: Array<String>) {
 
             println("```")
             repeat(n) {
+                if (abs(markovits.optimalWeights!![it]) < 1e-6) {
+                    return@repeat
+                }
+
                 println(String.format("%20s W=%7.2f%% Avg=%7.2f%% StdDev=%7.2f%%",
                         timeseries[it].name,
                         markovits.optimalWeights!![it] * 100,
@@ -91,13 +107,13 @@ fun main(args: Array<String>) {
             optimizeForRisk(riskAversion / 100.0, false)
         }
 
-        for (riskAversion in (1000 downTo 101).step(100)) {
-            optimizeForRisk(riskAversion / 100.0, true)
-        }
-
-        for (riskAversion in (100 downTo 1).step(1)) {
-            optimizeForRisk(riskAversion / 100.0, true)
-        }
+//        for (riskAversion in (1000 downTo 101).step(100)) {
+//            optimizeForRisk(riskAversion / 100.0, true)
+//        }
+//
+//        for (riskAversion in (100 downTo 1).step(1)) {
+//            optimizeForRisk(riskAversion / 100.0, true)
+//        }
     }
 }
 

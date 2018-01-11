@@ -65,7 +65,7 @@ object CryptoCompare {
     init {
         val cacheDir = File("cache")
         cacheDir.mkdirs()
-        val cache = Cache(cacheDir, (10 * 1024 * 1024).toLong()) // 10MB cache
+        val cache = Cache(cacheDir, (1000 * 1024 * 1024).toLong())
 
         httpClient = OkHttpClient().setCache(cache)
     }
@@ -75,8 +75,9 @@ object CryptoCompare {
         val response = httpClient.getJson<CoinListResponse> {
             url("https://min-api.cryptocompare.com/data/all/coinlist")
         }
-        val ids = response.defaultWatchlist.coinIs.split(",") + "4432"
-        return response.data.values.toList().filter { ids.contains(it.id) }.sortedBy { it.name }
+//        val ids = response.defaultWatchlist.coinIs.split(",") + "4432"
+//        return response.data.values.toList().filter { ids.contains(it.id) }.sortedBy { it.name }
+        return response.data.values.toList().sortedBy { it.name }
     }
 
 
@@ -86,12 +87,14 @@ object CryptoCompare {
                     .newBuilder()
                     .addQueryParameter("fsym", from)
                     .addQueryParameter("tsym", to)
-                    .addQueryParameter("limit", "365")
+                    .addQueryParameter("limit", "30")
                     .addQueryParameter("aggregate", "1")
                     .addQueryParameter("e", "CCCAGG")
                     .build())
         }
-        return response.data.map { Pair(Date(it.time * 1000), it.close) }
+        return response.data
+                .filter { it.volumeTo > 400000 }
+                .map { Pair(Date(it.time * 1000), it.close) }
                 .sortedBy { it.first.time }.toMap()
     }
 }

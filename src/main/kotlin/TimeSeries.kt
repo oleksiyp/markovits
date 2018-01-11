@@ -19,6 +19,10 @@ class DailyTimeSeries(val name: String, data: Map<TimeSeriesDate, Double>) {
     fun cov(ts: DailyTimeSeries): Double {
         val keys = centeredData.keys.intersect(ts.centeredData.keys)
 
+        if (keys.size <= 3) {
+            return 0.0
+        }
+
         val sum = keys.map { key ->
             centeredData.getValue(key) * ts.centeredData.getValue(key)
         }.sum()
