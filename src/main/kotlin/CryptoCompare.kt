@@ -75,7 +75,7 @@ object CryptoCompare {
         val response = httpClient.getJson<CoinListResponse> {
             url("https://min-api.cryptocompare.com/data/all/coinlist")
         }
-        val ids = response.defaultWatchlist.coinIs.split(",")
+        val ids = response.defaultWatchlist.coinIs.split(",") + "4432"
         return response.data.values.toList().filter { ids.contains(it.id) }.sortedBy { it.name }
     }
 
