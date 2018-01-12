@@ -50,7 +50,7 @@ fun main(args: Array<String>) {
                 val assetReturns = priceClose.returns()
                 if (assetReturns.size == 15) {
                     val ts = DailyTimeSeries(coin.coinName, assetReturns.mapKeys { TimeSeriesDate(it.key) })
-                    if (abs(ts.stdDev) > 1e-6) {
+                    if (abs(ts.stdDev) > 1e-6 && ts.stdDev < 0.30) {
                         timeseries.add(ts)
                         println("DATA ${coin.coinName} ${assetReturns.size}")
                     }
